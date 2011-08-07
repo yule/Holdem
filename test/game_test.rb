@@ -19,6 +19,29 @@ class GameTest < Test::Unit::TestCase
     
   end  
 
+  def test_can_flop
+    game = Holdem.new
+    game.deal
+    game.flop
+    assert_equal 3, game.board.size
+  end
+  
+  def test_can_turn
+    game = Holdem.new
+    game.deal
+    game.flop
+    game.turn
+    assert_equal 4, game.board.size
+  end  
+
+  def test_can_river
+    game = Holdem.new
+    game.deal
+    game.flop
+    game.turn
+    game.river
+    assert_equal 5, game.board.size
+  end  
   
   
 end

@@ -3,7 +3,7 @@ require 'helper'
 class PlayerTest < Test::Unit::TestCase
   
   def setup
-    Holdem.new
+    @game = Holdem.new
   end  
   
   def test_initializes_ok
@@ -11,26 +11,26 @@ class PlayerTest < Test::Unit::TestCase
   end  
 
   def test_player_has_stack
-    player = Player.new(10000)
+    player = Player.new(10000, @game)
     assert_equal 10000, player.stack
   end
   
   ################# Preflop #######################
   def test_player_can_bet
-    player = Player.new(10)
+    player = Player.new(10, @game)
     player.bet(2)
     assert_equal 8, player.stack 
   end 
 
   def test_player_cant_bet_more_than_stack
-    player = Player.new(10)
+    player = Player.new(10, @game)
     player.bet(11)
     assert_equal 0, player.stack 
   end
 
   def test_player_can_call
-    player = Player.new(10)
-    playerb = Player.new(20)
+    player = Player.new(10, @game)
+    playerb = Player.new(20, @game)
     player.bet(7)
     playerb.call
     assert_equal 3, player.stack
@@ -38,8 +38,8 @@ class PlayerTest < Test::Unit::TestCase
   end
 
   def test_player_can_reraise
-    player = Player.new(30)
-    playerb = Player.new(20)
+    player = Player.new(30, @game)
+    playerb = Player.new(20, @game)
     player.bet(7)
     playerb.bet(15)
     player.call
@@ -48,9 +48,9 @@ class PlayerTest < Test::Unit::TestCase
   end  
   
   def test_calling_station_works
-    player = Player.new(30)
-    playerb = Player.new(20)
-    calling_station = Player.new(20)
+    player = Player.new(30, @game)
+    playerb = Player.new(20, @game)
+    calling_station = Player.new(20, @game)
     player.bet(7)
     calling_station.call
     playerb.bet(15)
@@ -62,9 +62,9 @@ class PlayerTest < Test::Unit::TestCase
   end  
 
   def test_all_in_allows_more_betting
-    player = Player.new(30)
-    playerb = Player.new(20)
-    calling_station = Player.new(6)
+    player = Player.new(30, @game)
+    playerb = Player.new(20, @game)
+    calling_station = Player.new(6, @game)
     player.bet(7)
     calling_station.call
     playerb.bet(15)
@@ -75,8 +75,8 @@ class PlayerTest < Test::Unit::TestCase
   end
   
   def test_player_can_fold
-    player = Player.new(30)
-    playerb = Player.new(20)
+    player = Player.new(30, @game)
+    playerb = Player.new(20, @game)
     player.bet(7)
     playerb.fold
     assert_equal 23, player.stack
@@ -84,8 +84,8 @@ class PlayerTest < Test::Unit::TestCase
   end  
   
   def test_player_can_raise_by
-    player = Player.new(30)
-    playerb = Player.new(40)
+    player = Player.new(30, @game)
+    playerb = Player.new(40, @game)
     player.bet(10)
     playerb.raise_by(10)
     player.call
@@ -94,8 +94,8 @@ class PlayerTest < Test::Unit::TestCase
   end  
   
   def test_player_can_raise_to
-    player = Player.new(30)
-    playerb = Player.new(40)
+    player = Player.new(30, @game)
+    playerb = Player.new(40, @game)
     player.bet(10)
     playerb.raise_to(20)
     player.call
@@ -103,7 +103,17 @@ class PlayerTest < Test::Unit::TestCase
     assert_equal 20, playerb.stack
   end  
   
-  
+  def test_flop_resets_bet
+    player = Player.new(30, @game)
+    playerb = Player.new(40, @game)
+    player.bet(10)
+    playerb.call
+    @game.flop
+    player.raise_by(5)
+    playerb.call
+    assert_equal 15, player.stack
+    assert_equal 25, playerb.stack
+  end  
   
 end
  
