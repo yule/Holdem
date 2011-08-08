@@ -1,8 +1,16 @@
 
 
-class Hand < Deck
+class Hand 
   
-  attr_accessor :player
+  attr_accessor :player, :game
+  
+  def full_hand
+    (@game.board + @cards).sort
+  end  
+  
+  def to_s
+    @cards.inspect
+  end
   
   def is_royal_flush?
     true

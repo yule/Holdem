@@ -5,7 +5,7 @@ class PlayerTest < Test::Unit::TestCase
   def setup
     @table = Table.new
     Player.new(10, @table)
-     @game = @table.new_hand(true)
+    @table.new_hand(true)
   end
   
   def test_initializes_ok
@@ -17,7 +17,6 @@ class PlayerTest < Test::Unit::TestCase
     assert_equal 10000, player.stack
   end
   
-  ################# Preflop #######################
   def test_player_can_bet
     player = @table.players.first
     player.bet(2)
@@ -29,6 +28,8 @@ class PlayerTest < Test::Unit::TestCase
     player.bet(11)
     assert_equal 0, player.stack 
   end
+  
+  
   
 end
  

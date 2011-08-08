@@ -14,7 +14,10 @@ class Holdem < Game
   def deal
     reset_bets
     super
-    (0..@hands.size-1).each{|n| @hands[n].player = @table.players[n] }
+    (0..@hands.size-1).each{|n| 
+      @hands[n].player = @table.players[n] 
+      @hands[n].game = self
+    }
     self
   end  
 
