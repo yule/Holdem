@@ -38,7 +38,7 @@ class Hand
   
   def is_flush?
     just_suits.sort.each{|n|
-      return true if just_suits.count(n) == 5
+      return true if just_suits.count(n) >= 5
     }
     false
   end
