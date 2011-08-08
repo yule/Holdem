@@ -19,7 +19,6 @@ class HandTest < Test::Unit::TestCase
     hand = Hand.new   
     hand << Card.new("9", "Spades")
     hand << Card.new("9", "Hearts")
-    assert !hand.is_royal_flush?
     assert hand.is_straight_flush?
   end
   

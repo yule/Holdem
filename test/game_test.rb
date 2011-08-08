@@ -2,14 +2,18 @@ require 'helper'
 
 class GameTest < Test::Unit::TestCase
   
+  def setup
+    @table = Table.new
+  end
+  
   def test_initializes_ok
-    assert_instance_of Game, Game.new
-    assert_kind_of Game, Holdem.new 
- end  
+    assert_instance_of Holdem, Holdem.new(@table)
+    assert_kind_of Game, Holdem.new(@table) 
+  end  
   
   
   def test_deals_ok
-    game = Holdem.new(10)
+    game = Holdem.new(@table, 10)
     game.deal
     assert_equal 10, game.hands.size
     
@@ -20,14 +24,14 @@ class GameTest < Test::Unit::TestCase
   end  
 
   def test_can_flop
-    game = Holdem.new
+    game = Holdem.new(@table)
     game.deal
     game.flop
     assert_equal 3, game.board.size
   end
   
   def test_can_turn
-    game = Holdem.new
+    game = Holdem.new(@table)
     game.deal
     game.flop
     game.turn
@@ -35,7 +39,7 @@ class GameTest < Test::Unit::TestCase
   end  
 
   def test_can_river
-    game = Holdem.new
+    game = Holdem.new(@table)
     game.deal
     game.flop
     game.turn
