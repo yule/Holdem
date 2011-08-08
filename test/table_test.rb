@@ -27,4 +27,7 @@ class TableTest < Test::Unit::TestCase
     assert_equal 2, table.dealer.stack
   end  
   
+  
+  
+  
 end  
