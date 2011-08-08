@@ -1,12 +1,13 @@
 
 class Player
 
-  attr_reader :stack, :amount_in_pot, :total_amount_in_pot
-  attr_accessor :game, :table
+  attr_reader :stack
+  attr_accessor :game, :table, :amount_in_pot, :total_amount_in_pot
 
   def initialize(stck = 100000, tbl = Table.new)
     @stack = stck
     @table = tbl
+    @table.players << self unless (@table.players.include?(self))
   end
 
   def bet(amt)
@@ -16,7 +17,6 @@ class Player
     @table.current_game.pot += amt
     @table.current_game.current_bet = [amt,@table.current_game.current_bet].max
     @amount_in_pot = amt
-    @total_amount_in_pot = amt
   end
 
 
