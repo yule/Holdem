@@ -8,8 +8,9 @@ class Table
     @archive_hands = []
   end
   
-  def new_hand
+  def new_hand(first_hand = false)
     @archive_hands << @current_hand if @current_hand
+    @players << @players.shift unless first_hand
     @current_hand = Holdem.new(self)
     @current_hand.deal
   end  
@@ -18,5 +19,10 @@ class Table
     @current_hand
   end
   
+  def dealer
+    @players.first
+  end
+  
+    
   
 end

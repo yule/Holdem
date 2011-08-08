@@ -19,6 +19,8 @@ class Player
     @amount_in_pot = amt
   end
 
+def check
+end
 
   def call
     bet(@table.current_game.current_bet - amount_in_pot) 

@@ -14,6 +14,8 @@ class Holdem < Game
   def deal
     reset_bets
     super
+    (0..@hands.size-1).each{|n| @hands[n].player = @table.players[n] }
+    self
   end  
 
   def flop
@@ -25,11 +27,13 @@ class Holdem < Game
   
   def turn
     @current_bet = 0
+    accumulate_bets
     deal_card
   end  
   
   def river
     @current_bet = 0
+    accumulate_bets
     deal_card
   end  
   

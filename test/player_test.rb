@@ -10,8 +10,7 @@ class PlayerTest < Test::Unit::TestCase
     Player.new(20, @table)
     Player.new(6, @table)
     Player.new(40, @table)
-
-    @game = @table.new_hand
+    @game = @table.new_hand(true)
   end  
   
   def test_initializes_ok
@@ -123,6 +122,31 @@ class PlayerTest < Test::Unit::TestCase
     assert_equal 15, player.stack
     assert_equal 25, playerb.stack
   end  
+  
+  def test_full_hand_betting
+    player1 = @table.players[0]
+    player2 = @table.players[1]
+    player3 = @table.players[2]
+    player4 = @table.players[3]
+    player5 = @table.players[4]
+    player6 = @table.players[5]
+    
+    player1.bet(10); player2.call; player3.call;  player4.call; player5.call; player6.call
+    @game.flop
+    player1.check; player2.check; player3.raise_to(10); player4.call; player5.call; player6.call; player1.call; player2.call
+    @game.turn
+    player1.check; player2.check; player3.check; player4.check; player5.check; player6.bet(5); player1.call; player2.fold; player3.fold; player4.call; player5.call
+    @game.river
+    player1.check; player3.check; player4.check; player5.check; player6.check
+    
+    assert_equal 0, player1.stack
+    assert_equal 0, player2.stack
+    assert_equal 10, player3.stack
+    assert_equal 0, player4.stack
+    assert_equal 0, player5.stack
+    assert_equal 15, player6.stack
+
+  end      
   
 end
  
