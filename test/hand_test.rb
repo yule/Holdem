@@ -40,7 +40,7 @@ class HandTest < Test::Unit::TestCase
   def test_can_detect_full_house
     @hand << Card.new("Jack","Clubs")
     @hand << Card.new("Queen","Diamonds")
-    assert @hand.is_four_of_a_kind?
+    assert @hand.is_full_house?
   end
 
   def test_can_detect_flush

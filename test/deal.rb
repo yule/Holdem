@@ -8,11 +8,10 @@ end
 
 @table.new_hand(true)
 @table.new_hand
-for hand in @table.current_hand.hands
-  puts hand.to_s
-end
 
 @table.current_hand.flop
 @table.current_hand.turn
-puts @table.current_hand.river
-puts "DONE"
+@table.current_hand.river
+hand = @table.current_hand.hands.first
+
+puts hand.just_suits.each{|e| just_suits}
