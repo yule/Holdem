@@ -1,6 +1,4 @@
 
 
 class Hand < Deck
-  
-  
 end
