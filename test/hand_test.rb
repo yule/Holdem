@@ -43,6 +43,22 @@ class HandTest < Test::Unit::TestCase
     assert @hand.is_full_house?
   end
 
+  def test_can_detect_full_house_with_two_trips
+    community = [Card.new(10, "spades"), Card.new(10, "diamonds"), Card.new("jack", "Spades"), Card.new("King","Spades"), Card.new("Jack","Hearts")]
+    @hand.game.board = community
+    @hand << Card.new("Jack","Clubs")
+    @hand << Card.new("10","hearts")
+    assert @hand.is_full_house?
+  end
+
+  def test_can_detect_two_pair_with_three_pair
+    community = [Card.new(10, "spades"), Card.new(10, "diamonds"), Card.new("jack", "Spades"), Card.new("King","Spades"), Card.new("Jack","Hearts")]
+    @hand.game.board = community
+    @hand << Card.new(2,"Clubs")
+    @hand << Card.new(2,"hearts")
+    assert @hand.is_two_pair?
+  end
+
   def test_can_detect_flush
     @hand << Card.new("2","Spades")
     @hand << Card.new("5","Diamonds")

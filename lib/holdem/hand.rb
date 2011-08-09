@@ -33,7 +33,7 @@ class Hand
   end
   
   def is_full_house?
-    get_matching_hash[:trips] && get_matching_hash[:pair]
+    get_matching_hash[:trips] && get_matching_hash[:pairs]
   end
   
   def is_flush?
@@ -52,29 +52,34 @@ class Hand
   end
   
   def is_two_pair?
-    first_pair = get_matching_hash[:pair]
-    second_pair = get_matching_hash(true)[:pair]
-    first_pair && second_pair && (first_pair != second_pair)
+    get_matching_hash[:pairs].size>1
   end  
   
   def is_one_pair?
-    !!get_matching_hash[:pair]
+    !!get_matching_hash[:pairs]
   end
   
   
   private
   
   def get_matching_hash(revers=false)
-    quads = trips = pair = high_card = false
-    vals = just_vals.sort
-    vals = vals.reverse if revers
-    vals.each{|n|
-      quads = n if just_vals.count(n) == 4
-      trips = n if just_vals.count(n) == 3
-      pair = n if just_vals.count(n) == 2
-      high_card = n if just_vals.count(n) == 1
+    results = {:pairs=>[], :trips=>[], :quads=>[], :high_cards=>[]}
+    just_vals.sort.each{|n|
+      c = just_vals.count(n)
+      case c
+        when 1  
+          results[:high_cards] << n
+        when 2 
+          results[:pairs] << n
+        when 3 
+          results[:trips] << n
+        when 4 
+          results[:quads] << n
+      end
     }
-    {:quads=>quads, :trips=>trips, :pair=>pair, :high_card=>high_card}
+    results[:high_cards] << results[:pairs].min if results[:pairs].size > 2 #low pair of three pair is a high card
+    results[:pairs] << results[:trips].min if results[:trips].size > 1 # low trips of hand is pair
+    results
   end  
   
   
