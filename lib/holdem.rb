@@ -6,6 +6,7 @@ require 'deck'
 require 'holdem/game'
 require 'holdem/hand'
 require 'holdem/player'
+require 'holdem/table'
 
 class Holdem
 end

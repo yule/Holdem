@@ -1,24 +1,27 @@
 
 class Player
 
-  attr_reader :stack, :amount_in_pot
+  attr_reader :stack
+  attr_accessor :game, :table, :amount_in_pot, :total_amount_in_pot
 
-  def initialize(stck = 100000)
+  def initialize(stck = 100000, tbl = Table.new)
     @stack = stck
+    @table = tbl
+    @table.players << self unless (@table.players.include?(self))
   end
 
   def bet(amt)
-    return if amt.nil? or (amt+amount_in_pot) < Holdem.current_bet
+    return if amt.nil? or (amt+amount_in_pot) < @table.current_game.current_bet
     amt = @stack if amt>@stack
     @stack -= amt
-    Holdem.pot += amt
-    Holdem.current_bet = [amt,Holdem.current_bet].max
+    @table.current_game.pot += amt
+    @table.current_game.current_bet = [amt,@table.current_game.current_bet].max
     @amount_in_pot = amt
   end
 
 
   def call
-    bet(Holdem.current_bet - amount_in_pot) 
+    bet(@table.current_game.current_bet - amount_in_pot) 
   end
 
   def amount_in_pot
@@ -26,15 +29,19 @@ class Player
   end  
 
   def raise_by(amt)
-    bet(amt+Holdem.current_bet)
+    bet(amt+@table.current_game.current_bet)
   end
   
   def raise_to(amt)
     bet(amt)
   end
   
+  def check
+  end
+
   def fold
   end  
+
 
 end
 

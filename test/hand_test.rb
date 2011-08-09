@@ -3,73 +3,74 @@ require 'helper'
 class HandTest < Test::Unit::TestCase
   
   def setup 
-    @community = [Card.new(10, "spades"), Card.new("J", "spades"), Card.new("Q", "Spades"), Card.new("K","Spades"), Card.new("J","Hearts")]
+    community = [Card.new(10, "spades"), Card.new("Jack", "spades"), Card.new("Queen", "Spades"), Card.new("King","Spades"), Card.new("Jack","Hearts")]
+    table = Table.new
+    Player.new(10000, table)
+    Player.new(10000, table)
+    game = table.new_hand
+    game.board = community
+    @hand = Hand.new
+    @hand.game = game
+  end
+  
+  def test_has_7_cards
+    @hand << Card.new("Ace", "Spades")
+    @hand << Card.new("4", "Clubs")
+    assert_equal 7, @hand.full_hand.size
   end
 
- 
-
   def test_can_detect_royal_flush
-    hand = Hand.new   
-    hand << Card.new("A", "Spades")
-    hand << Card.new("4", "Clubs")
-    assert hand.is_royal_flush?
+    @hand << Card.new("Ace", "Spades")
+    @hand << Card.new("4", "Clubs")
+    assert @hand.is_royal_flush?
   end 
 
-  def test_can_detect_straight_flush
-    hand = Hand.new   
-    hand << Card.new("9", "Spades")
-    hand << Card.new("9", "Hearts")
-    assert !hand.is_royal_flush?
-    assert hand.is_straight_flush?
+  def test_can_detect_straight_flush   
+    @hand << Card.new("9", "Spades")
+    @hand << Card.new("9", "Hearts")
+    assert @hand.is_straight_flush?
   end
   
   def test_can_detect_quads
-    hand = Hand.new
-    hand << Card.new("J","Clubs")
-    hand << Card.new("J","Diamonds")
-    assert hand.is_four_of_a_kind?
+    @hand << Card.new("Jack","Clubs")
+    @hand << Card.new("Jack","Diamonds")
+    assert @hand.is_four_of_a_kind?
   end
 
   def test_can_detect_full_house
-    hand = Hand.new
-    hand << Card.new("J","Clubs")
-    hand << Card.new("Q","Diamonds")
-    assert hand.is_four_of_a_kind?
+    @hand << Card.new("Jack","Clubs")
+    @hand << Card.new("Queen","Diamonds")
+    assert @hand.is_full_house?
   end
 
   def test_can_detect_flush
-    hand = Hand.new
-    hand << Card.new("2","Spades")
-    hand << Card.new("5","Diamonds")
-    assert hand.is_flush?
+    @hand << Card.new("2","Spades")
+    @hand << Card.new("5","Diamonds")
+    assert @hand.is_flush?
   end
 
   def test_can_detect_straight
-    hand = Hand.new
-    hand << Card.new("2","Hearts")
-    hand << Card.new("9","Diamonds")
-    assert hand.is_straight?
+    @hand << Card.new("2","Hearts")
+    @hand << Card.new("9","Diamonds")
+    assert @hand.is_straight?
   end
   
   def test_can_detect_trips
-    hand = Hand.new
-    hand << Card.new("2","Hearts")
-    hand << Card.new("J","Diamonds")
-    assert hand.is_three_of_a_kind?
+    @hand << Card.new("2","Hearts")
+    @hand << Card.new("Jack","Diamonds")
+    assert @hand.is_three_of_a_kind?
   end
 
   def test_can_detect_two_pair
-    hand = Hand.new
-    hand << Card.new("2","Hearts")
-    hand << Card.new("2","Diamonds")
-    assert hand.is_two_pair?
+    @hand << Card.new("2","Hearts")
+    @hand << Card.new("2","Diamonds")
+    assert @hand.is_two_pair?
   end
  
   def test_can_detect_one_pair?
-    hand = Hand.new
-    hand << Card.new("2","Hearts")
-    hand << Card.new("3","Diamonds")
-    assert hand.is_one_pair?
+    @hand << Card.new("2","Hearts")
+    @hand << Card.new("3","Diamonds")
+    assert @hand.is_one_pair?
   end
 
 

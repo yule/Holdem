@@ -1,3 +1,3 @@
-class Deck
-  VERSION = "0.0.1"
+class Holdem
+  VERSION = "0.0.4"
 end
