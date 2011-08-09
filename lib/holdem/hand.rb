@@ -44,7 +44,12 @@ class Hand
   end
   
   def is_straight?
-    true
+    vals = just_vals.uniq.sort
+    vals.unshift(1) if vals.include?(14)
+    vals.each_with_index{|n,m|    
+       return n if (n..(n+4)).to_a === just_vals.uniq.sort[m..(m+4)]
+    }
+    return false
   end
   
   def is_three_of_a_kind?
@@ -61,7 +66,8 @@ class Hand
   
   
   private
-  
+
+ 
   def get_matching_hash(revers=false)
     results = {:pairs=>[], :trips=>[], :quads=>[], :high_cards=>[]}
     just_vals.sort.each{|n|
@@ -76,6 +82,7 @@ class Hand
         when 4 
           results[:quads] << n
       end
+
     }
     results[:high_cards] << results[:pairs].min if results[:pairs].size > 2 #low pair of three pair is a high card
     results[:pairs] << results[:trips].min if results[:trips].size > 1 # low trips of hand is pair

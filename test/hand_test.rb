@@ -41,6 +41,7 @@ class HandTest < Test::Unit::TestCase
     @hand << Card.new("Jack","Clubs")
     @hand << Card.new("Queen","Diamonds")
     assert @hand.is_full_house?
+    assert !@hand.is_straight?
   end
 
   def test_can_detect_full_house_with_two_trips
@@ -71,6 +72,15 @@ class HandTest < Test::Unit::TestCase
     assert @hand.is_straight?
   end
   
+  def test_can_detect_straight_from_ace_up
+    community = [Card.new("Ace", "spades"), Card.new(2, "diamonds"), Card.new(3, "Spades"), Card.new("King","Spades"), Card.new("Jack","Hearts")]
+    @hand.game.board = community
+    @hand << Card.new(4,"Clubs")
+    @hand << Card.new(5,"hearts")
+    assert @hand.is_straight?
+  end
+   
+ 
   def test_can_detect_trips
     @hand << Card.new("2","Hearts")
     @hand << Card.new("Jack","Diamonds")
