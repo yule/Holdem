@@ -47,7 +47,7 @@ class Hand
     vals = just_vals.uniq.sort
     vals.unshift(1) if vals.include?(14)
     vals.each_with_index{|n,m|    
-       return n if (n..(n+4)).to_a === just_vals.uniq.sort[m..(m+4)]
+       return n if (n..(n+4)).to_a === vals[m..(m+4)]
     }
     return false
   end
