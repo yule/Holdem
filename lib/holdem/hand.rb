@@ -30,11 +30,11 @@ class Hand
   end
   
   def is_royal_flush?
-    false
+    is_straight? == 14 && is_flush?
   end
   
   def is_straight_flush?
-    false    
+    is_straight? && is_flush?    
   end
   
   def is_four_of_a_kind?
@@ -42,7 +42,7 @@ class Hand
   end
   
   def is_full_house?
-    !get_matching_hash[:trips].empty? && !get_matching_hash[:pairs].empty?
+    (!get_matching_hash[:trips].empty? && !get_matching_hash[:pairs].empty?)
   end
   
   def is_flush?
@@ -55,10 +55,11 @@ class Hand
   def is_straight?
     vals = just_vals.uniq.sort
     vals.unshift(1) if vals.include?(14)
+    max_end = 0
     vals.each_with_index{|n,m|    
-       return n if (n..(n+4)).to_a === vals[m..(m+4)]
+       max_end = n+4 if (n..(n+4)).to_a === vals[m..(m+4)]
     }
-    return false
+    max_end>0? max_end : false
   end
   
   def is_three_of_a_kind?
@@ -66,7 +67,7 @@ class Hand
   end
   
   def is_two_pair?
-    get_matching_hash[:pairs].size>1
+    get_matching_hash[:pairs].uniq.size>1
   end  
   
   def is_one_pair?
@@ -74,7 +75,6 @@ class Hand
   end
   
   
-  private
 
  
   def get_matching_hash(revers=false)
@@ -94,7 +94,7 @@ class Hand
 
     }
     results[:high_cards] << results[:pairs].min if results[:pairs].size > 2 #low pair of three pair is a high card
-    results[:pairs] << results[:trips].min if results[:trips].size > 1 # low trips of hand is pair
+    results[:pairs] << results[:trips].min if results[:trips].size > 1 and results[:trips].min != results[:trips].max # low trips of hand is pair unless they're the same
     results
   end  
   
