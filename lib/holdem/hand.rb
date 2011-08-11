@@ -19,21 +19,30 @@ class Hand
   def to_s
     @cards.inspect
   end
+
+
+  def rank
+     possible = %w(royal_flush straight_flush four_of_a_kind full_house flush straight three_of_a_kind two_pair one_pair high_card)
+     possible.each_with_index{|c,n|
+      return  possible.length - n if send "is_#{c}?"
+     }
+     1
+  end
   
   def is_royal_flush?
-    true
+    false
   end
   
   def is_straight_flush?
-    true
+    false    
   end
   
   def is_four_of_a_kind?
-    !!get_matching_hash[:quads]
+    !get_matching_hash[:quads].empty?
   end
   
   def is_full_house?
-    get_matching_hash[:trips] && get_matching_hash[:pairs]
+    !get_matching_hash[:trips].empty? && !get_matching_hash[:pairs].empty?
   end
   
   def is_flush?
@@ -53,7 +62,7 @@ class Hand
   end
   
   def is_three_of_a_kind?
-    !!get_matching_hash[:trips] 
+    !get_matching_hash[:trips].empty? 
   end
   
   def is_two_pair?
@@ -61,7 +70,7 @@ class Hand
   end  
   
   def is_one_pair?
-    !!get_matching_hash[:pairs]
+    !get_matching_hash[:pairs].empty?
   end
   
   
