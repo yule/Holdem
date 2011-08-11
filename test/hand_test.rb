@@ -26,6 +26,12 @@ class HandTest < Test::Unit::TestCase
     assert_equal 10, @hand.rank
   end 
 
+  def test_doesnt_falsly_claim_royal
+    @hand << Card.new("Ace", "Clubs")
+    @hand << Card.new("4", "Spades")
+    assert !@hand.is_royal_flush?    
+  end
+
   def test_can_detect_straight_flush   
     @hand << Card.new("9", "Spades")
     @hand << Card.new("9", "Hearts")

@@ -30,11 +30,16 @@ class Hand
   end
   
   def is_royal_flush?
-    is_straight? == 14 && is_flush?
+    is_straight? == 14 && is_straight_flush?
   end
   
   def is_straight_flush?
-    is_straight? && is_flush?    
+    cons = {:hearts=>0, :diamonds=>0, :clubs=>0, :spades=>0}
+    full_hand.each_with_index{|hand,i|
+      next_card = Card.new(hand.to_i + 1, hand.suit)
+      cons[hand.suit.downcase.to_sym] += 1 if full_hand.include?(next_card)
+    }
+    cons[:hearts]==4 || cons[:diamonds]==4 || cons[:clubs]==4 || cons[:spades]==4
   end
   
   def is_four_of_a_kind?
@@ -55,11 +60,10 @@ class Hand
   def is_straight?
     vals = just_vals.uniq.sort
     vals.unshift(1) if vals.include?(14)
-    max_end = 0
     vals.each_with_index{|n,m|    
-       max_end = n+4 if (n..(n+4)).to_a === vals[m..(m+4)]
+       return n+4 if (n..(n+4)).to_a === vals[m..(m+4)]
     }
-    max_end>0? max_end : false
+    false
   end
   
   def is_three_of_a_kind?
@@ -74,6 +78,9 @@ class Hand
     !get_matching_hash[:pairs].empty?
   end
   
+  def is_high_card?
+    true
+  end  
   
   private
 
