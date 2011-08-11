@@ -11,6 +11,8 @@ class HandTest < Test::Unit::TestCase
     game.board = community
     @hand = Hand.new
     @hand.game = game
+    @hand2 = Hand.new
+    @hand2.game = game
   end
   
   def test_has_7_cards
@@ -115,6 +117,90 @@ class HandTest < Test::Unit::TestCase
     assert_equal 2, @hand.rank
   end
 
+  def test_can_compare
+    @hand << Card.new("9", "Spades")
+    @hand << Card.new("9", "Hearts")
+    
+    @hand2 << Card.new("2","Hearts")
+    @hand2 << Card.new("Jack","Diamonds")
+    
+    assert @hand > @hand2
+    assert @hand2 < @hand
+  end
+  
+  def test_can_distguish_between_same_hand
+    @hand << Card.new("6", "Diamonds")
+    @hand << Card.new("6", "Hearts")
+    
+    @hand2 << Card.new("7","Hearts")
+    @hand2 << Card.new("7","Diamonds")
+    assert @hand < @hand2
+    assert @hand2 > @hand
+  end
+
+  def test_can_distguish_on_third_kicker
+    community = [Card.new("Ace", "spades"), Card.new("Ace", "diamonds"), Card.new(3, "Spades"), Card.new("King","Spades"), Card.new("Jack","Hearts")]
+    @hand.game.board = community
+    @hand2.game.board = community
+    @hand << Card.new(9,"Clubs")
+    @hand << Card.new(5,"hearts")
+    
+    @hand2 << Card.new("8","Hearts")
+    @hand2 << Card.new("7","Diamonds")
+    assert @hand > @hand2
+    assert @hand2 < @hand
+  end
+  
+  def test_can_tie
+    community = [Card.new("Ace", "spades"), Card.new("Ace", "diamonds"), Card.new(3, "Spades"), Card.new("King","Spades"), Card.new("Jack","Hearts")]
+    @hand.game.board = community
+    @hand2.game.board = community
+    @hand << Card.new(9,"Clubs")
+    @hand << Card.new(5,"hearts")
+    
+    @hand2 << Card.new("9","Hearts")
+    @hand2 << Card.new("7","Diamonds")
+    assert @hand == @hand2
+  end  
+  
+  def test_can_distuish_on_full_house
+    community = [Card.new("Ace", "spades"), Card.new("Ace", "diamonds"), Card.new(3, "Spades"), Card.new("King","Spades"), Card.new("King","Hearts")]
+    @hand.game.board = community
+    @hand2.game.board = community
+    @hand << Card.new("Ace","Clubs")
+    @hand << Card.new(5,"hearts")
+    
+    @hand2 << Card.new("Kind","Clubs")
+    @hand2 << Card.new("7","Diamonds")
+    assert @hand > @hand2
+    assert @hand2 < @hand
+  end
+
+  def test_can_distuish_on_two_pair_kicker
+    community = [Card.new("Ace", "spades"), Card.new("Ace", "diamonds"), Card.new(3, "Spades"), Card.new("King","Spades"), Card.new("King","Hearts")]
+    @hand.game.board = community
+    @hand2.game.board = community
+    @hand << Card.new("Queen","Clubs")
+    @hand << Card.new(5,"hearts")
+    
+    @hand2 << Card.new("Jack","Clubs")
+    @hand2 << Card.new("7","Diamonds")
+
+    assert @hand > @hand2
+    assert @hand2 < @hand
+  end
+
+  def test_can_distuish_on_straight
+    @hand << Card.new("9", "Hearts")
+    @hand << Card.new("5", "Hearts")
+    
+    @hand2 << Card.new("Ace","Hearts")
+    @hand2 << Card.new(2,"Diamonds")
+    
+    assert @hand < @hand2
+    assert @hand2 > @hand
+
+  end
 
 
 end

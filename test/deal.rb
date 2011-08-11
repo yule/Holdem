@@ -11,7 +11,9 @@ end
 
 @table.current_hand.flop
 @table.current_hand.turn
-@table.current_hand.river
-hand = @table.current_hand.hands.first
+puts @table.current_hand.river.inspect
+hands = @table.current_hand.hands.sort.reverse
+hands.each{|n|
+  puts "HAND : #{n.inspect}"
+}
 
-puts hand.just_suits.each{|e| just_suits}
