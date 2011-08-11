@@ -63,7 +63,7 @@ class Hand
   
   
   private
-  
+  #todo: deal with three pair
   def get_matching_hash(revers=false)
     quads = trips = pair = high_card = false
     vals = just_vals.sort
