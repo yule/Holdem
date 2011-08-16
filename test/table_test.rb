@@ -27,7 +27,15 @@ class TableTest < Test::Unit::TestCase
     assert_equal 2, table.dealer.stack
   end  
   
-  
-  
+  def test_can_put_action_on_correct_player
+    table = Table.new
+    p1 = Player.new(1000, table)
+    p2 = Player.new(1000, table)
+    p3 = Player.new(1000, table)
+    p4 = Player.new(1000, table)
+    table.new_hand(true)
+    assert_equal p4, table.action_on
+  end  
+    
   
 end  

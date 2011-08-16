@@ -1,8 +1,7 @@
 
 class Player
 
-  attr_reader :stack
-  attr_accessor :game, :table, :amount_in_pot, :total_amount_in_pot
+  attr_accessor :game, :table, :amount_in_pot, :total_amount_in_pot, :stack
 
   def initialize(stck = 100000, tbl = Table.new)
     @stack = stck
