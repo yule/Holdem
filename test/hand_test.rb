@@ -203,7 +203,21 @@ class HandTest < Test::Unit::TestCase
   end
 
 
-end
- 
+  def test_can_distinguish_on_flush
+    community = [Card.new("Ace", "spades"), Card.new(2, "spades"), Card.new(3, "Spades"), Card.new("King","Spades"), Card.new(6,"Hearts")]
+    @hand.game.board = community
+    @hand2.game.board = community
+    @hand << Card.new("Queen","Clubs")
+    @hand << Card.new(5,"spades")
+    
+    @hand2 << Card.new("Jack","Spades")
+    @hand2 << Card.new("7","Diamonds")
 
+    assert @hand < @hand2
+    assert @hand2 > @hand
+
+  
+  end
+
+end
 

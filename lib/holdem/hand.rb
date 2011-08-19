@@ -43,7 +43,13 @@ class Hand
           return same_trips unless same_trips == 0
           return get_matching_hash[:pairs].max <=> other.get_matching_hash[:pairs].max
       when 6 # flush TODO
-          return get_matching_hash[:high_cards].max <=> other.get_matching_hash[:high_cards]      
+          this_vals = full_hand.reject{|n| n.suit != which_flush?}.map{|v|v.to_i}.sort.reverse
+          that_vals = other.full_hand.reject{|n| n.suit != other.which_flush?}.map{|v|v.to_i}.sort.reverse
+          (0..4).to_a.each{|n|
+	    same = this_vals[n] <=> that_vals[n]
+            return same unless same == 0 && n<4 
+	  }
+ 
       when 4 # trips
           same_trips = get_matching_hash[:trips].max <=> other.get_matching_hash[:trips].max
           return same_trips unless same_trips == 0
@@ -61,7 +67,7 @@ class Hand
           return same_pair unless same_pair == 0
           kickers = 3
     end
-    (1..kickers).to_a.each{|n|
+    (1..kickers).to_a.each{|n| 
       this_kickers = get_matching_hash[:high_cards].uniq.sort.reverse
       other_kickers = other.get_matching_hash[:high_cards].uniq.sort.reverse
       check = this_kickers[n-1] <=> other_kickers[n-1]      
@@ -99,13 +105,17 @@ class Hand
     (!get_matching_hash[:trips].empty? && !get_matching_hash[:pairs].empty?)
   end
   
-  def is_flush?
+  def which_flush?
     just_suits.sort.each{|n|
-      return true if just_suits.count(n) >= 5
+      return n if just_suits.count(n) >= 5
     }
     false
   end
   
+  def is_flush?
+    !!which_flush?
+  end 
+
   def is_straight?
     vals = just_vals.uniq.sort
     vals.unshift(1) if vals.include?(14)
