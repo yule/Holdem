@@ -12,7 +12,11 @@ class BettingTest < Test::Unit::TestCase
     Player.new(40, @table)
     @game = @table.new_hand(true)
   end  
-  
+
+  def test_player_can_foldee
+    @table.players[2].fold
+    assert_equal 5, @table.current_hand.hands.size
+  end
   
   def test_player_can_call
     player = @table.players[0]

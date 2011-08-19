@@ -28,6 +28,7 @@ class PlayerTest < Test::Unit::TestCase
     player.bet(11)
     assert_equal 0, player.stack 
   end
+    
   
   
   

@@ -19,6 +19,7 @@ class Player
   end
 
 
+
   def call
     bet(@table.current_game.current_bet - amount_in_pot) 
   end
@@ -38,8 +39,10 @@ class Player
   def check
   end
 
-  def fold
-  end  
+
+  def fold  
+    @table.current_game.hands.delete_if{|n| n.player == self}
+  end
 
 
 end

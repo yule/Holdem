@@ -1,6 +1,6 @@
 class Holdem < Game
 
-  attr_accessor :pot, :current_bet, :board, :table
+  attr_accessor :pot, :current_bet, :board, :table, :players
 
   #overrides the default number of cards to be 2, takes an extra parameter as must belong to table
   def initialize(t, c=2)
