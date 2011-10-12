@@ -42,14 +42,13 @@ class Hand
           same_trips = get_matching_hash[:trips].max <=> other.get_matching_hash[:trips].max
           return same_trips unless same_trips == 0
           return get_matching_hash[:pairs].max <=> other.get_matching_hash[:pairs].max
-      when 6 # flush TODO
+      when 6 # flush
           this_vals = full_hand.reject{|n| n.suit != which_flush?}.map{|v|v.to_i}.sort.reverse
           that_vals = other.full_hand.reject{|n| n.suit != other.which_flush?}.map{|v|v.to_i}.sort.reverse
           (0..4).to_a.each{|n|
-	    same = this_vals[n] <=> that_vals[n]
+	          same = this_vals[n] <=> that_vals[n]
             return same unless same == 0 && n<4 
-	  }
- 
+          }
       when 4 # trips
           same_trips = get_matching_hash[:trips].max <=> other.get_matching_hash[:trips].max
           return same_trips unless same_trips == 0

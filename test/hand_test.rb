@@ -215,7 +215,6 @@ class HandTest < Test::Unit::TestCase
 
     assert @hand < @hand2
     assert @hand2 > @hand
-
   
   end
 
